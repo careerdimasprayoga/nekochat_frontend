@@ -3,12 +3,17 @@ import axios from 'axios'
 export default {
   state: {
     latLng: [],
-    dataLatLong: []
+    dataLatLong: [],
+    userId: ''
   },
   mutations: {
     pushLatLng (state, payload) {
-      console.log(payload)
+      // console.log(payload)
       // state.latLong = payload
+    },
+    pushUserId (state, payload) {
+      // console.log(payload)
+      state.userId = payload
     },
     pushDataLatLong (state, payload) {
       state.dataLatLong = payload
@@ -17,24 +22,23 @@ export default {
   actions: {
     getLatLong (context, payload) {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/chat_room/${payload}`)
+        .get(`${process.env.VUE_APP_BASE_URL}/profile/getCordinates/${payload}`)
         .then((response) => {
-          context.commit('pushListRoomChat', response.data.data)
+          console.log(response)
+          // context.commit('pushLatLng', response.data.data)
         })
         .catch((error) => {
           console.log(error.response)
         })
     },
-    postLatLong (context, payload) {
+    patchLatLng (context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`${process.env.VUE_APP_BASE_URL}/chat_room/send_chat`, payload)
+          .patch(`${process.env.VUE_APP_BASE_URL}/profile/patchCordinates/${context.state.userId}`, payload)
           .then((response) => {
-            console.log(response)
-            resolve(response)
+            resolve(response.data.msg)
           })
           .catch((error) => {
-            console.log(error)
             reject(error)
           })
       })

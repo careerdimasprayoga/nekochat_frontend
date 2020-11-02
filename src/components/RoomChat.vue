@@ -59,7 +59,7 @@
           >
             {{ this.getterDataInRoomChat[0].user_phone }}
           </p>
-          <p v-else>{{ this.getterDataInRoomChat[1].user_phone}}</p>
+          <p v-else>{{ this.getterDataInRoomChat[1].user_phone }}</p>
           <hr />
           <b-col xl="12" class="menu-wrapper">
             <b-button size="md" class="btn-custom-selected">Location</b-button>
@@ -69,6 +69,52 @@
           <b-col sm="12" class="mt-2">
             <img src="../assets/icons/dummy.png" style="width: 270px" />
           </b-col>
+          <!-- <b-col
+            sm="12"
+            class="mt-4"
+            v-if="
+              this.getterDataInRoomChat[0].user_id !== this.getterUserLogin.id
+            "
+          >
+            <GmapMap
+              :center="{
+                lat: this.getterDataInRoomChat[0].user_lat,
+                lng: this.getterDataInRoomChat[0].user_lng
+              }"
+              :zoom="15"
+              map-type-id="terrain"
+              style="width: 270px; height: 270px"
+            >
+              <GmapMarker
+                :position="{
+                  lat: this.getterDataInRoomChat[0].user_lat,
+                  lng: this.getterDataInRoomChat[0].user_lng
+                }"
+                :clickable="true"
+                :dragable="true"
+              />
+            </GmapMap>
+          </b-col>
+          <b-col sm="12" class="mt-4" v-else>
+            <GmapMap
+              :center="{
+                lat: this.getterDataInRoomChat[1].user_lat,
+                lng: this.getterDataInRoomChat[1].user_lng
+              }"
+              :zoom="15"
+              map-type-id="terrain"
+              style="width: 270px; height: 270px"
+            >
+              <GmapMarker
+                :position="{
+                  lat: this.getterDataInRoomChat[1].user_lat,
+                  lng: this.getterDataInRoomChat[1].user_lng
+                }"
+                :clickable="true"
+                :dragable="true"
+              />
+            </GmapMap>
+          </b-col> -->
         </div>
       </b-sidebar>
     </b-col>
@@ -109,14 +155,26 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import io from 'socket.io-client'
+
 export default {
   name: 'HelloWorld',
   data() {
     return {
+      socket: io('http://127.0.0.1:3009'),
       url: process.env.VUE_APP_BASE_URL,
       editPhone: false,
-      chatMessage: ''
+      chatMessage: '',
+      dataMessage: [
+        {
+          roomchat_id: '',
+          id_login: '',
+          id_receive: '',
+          message: ''
+        }
+      ],
+      dataPreviusMessage: []
     }
   },
   computed: {
@@ -125,8 +183,20 @@ export default {
       getterUserLogin: 'data_user'
     })
   },
+  mounted() {
+    this.socket.on('dataChatMessage', (data) => {
+      this.dataPreviusMessage.push(data)
+      this.mutationPushInRoomChat(this.dataPreviusMessage)
+      console.log(this.dataPreviusMessage)
+      // on ngambil data dari backend | emmit ngelempar dari backend
+    })
+  },
   methods: {
-    ...mapActions({ actionSendChat: 'postChat' }),
+    ...mapMutations({ mutationPushInRoomChat: 'pushInRoomChat' }),
+    ...mapActions({
+      actionSendChat: 'postChat',
+      actionGetInRoomChat: 'getInRoomChat'
+    }),
     sendChat() {
       let receiver = ''
       if (this.getterDataInRoomChat[0].id_receive === this.getterUserLogin.id) {
@@ -141,6 +211,19 @@ export default {
         message: this.chatMessage
       }
       this.actionSendChat(dataMessage)
+      this.dataPreviusMessage = [...this.getterDataInRoomChat]
+      const dataMessageTwo = {
+        roomchat_id: this.getterDataInRoomChat[0].roomchat_id,
+        id_sender: this.getterUserLogin.id,
+        id_receive: receiver,
+        message: this.chatMessage,
+        created: new Date(),
+        user_id: receiver,
+        user_name: this.getterDataInRoomChat[0].user_name,
+        user_email: this.getterDataInRoomChat[0].user_email,
+        user_image: this.getterDataInRoomChat[0].user_image
+      }
+      this.socket.emit('globalMessage', dataMessageTwo)
       this.chatMessage = ''
     }
   },

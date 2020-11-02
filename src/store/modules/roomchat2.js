@@ -28,7 +28,7 @@ export default {
       axios
         .get(`${process.env.VUE_APP_BASE_URL}/chat_room/getInChat/${payload}`)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           context.commit('pushInRoomChat', response.data.data)
         })
         .catch((error) => {

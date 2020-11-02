@@ -60,7 +60,7 @@
             <hr />
             <h5 class="mb-3">Location</h5>
             <GmapMap
-              :center="{ lat: -6.372518, lng: 106.5835572 }"
+              :center="{ lat: this.latitute, lng: this.longtitute }"
               :zoom="15"
               map-type-id="terrain"
               style="width: 270px; height: 270px"
@@ -161,9 +161,13 @@ export default {
   methods: {
     ...mapActions({
       actionGetListRoomChat: 'getListRoomChat',
-      actionInRoomChat: 'getInRoomChat'
+      actionInRoomChat: 'getInRoomChat',
+      actionPushLatLng: 'patchLatLng'
     }),
-    ...mapMutations({ mutationPushCordinates: 'pushLatLng' }),
+    ...mapMutations({
+      mutationPushCordinates: 'pushLatLng',
+      pushUserId: 'pushUserId'
+    }),
     clickInRoomChat(idRoom) {
       this.actionInRoomChat(idRoom.id_roomchat)
     }
@@ -178,7 +182,8 @@ export default {
       lat: this.latitute,
       lng: this.longtitute
     }
-    this.mutationPushCordinates(dataCordinates)
+    await this.pushUserId(this.getterUserLogin.id)
+    await this.actionPushLatLng(dataCordinates)
   }
 }
 </script>
