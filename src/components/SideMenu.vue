@@ -3,51 +3,60 @@
     <b-row>
       <b-col xl="12" class="header">
         <h3 style="display: inline">Neko Chat</h3>
-        <img
-          src="../assets/icons/Menu.png"
-          v-b-toggle.sidebar-1
-          class="styleIcon"
-        />
+        <b-dropdown
+          variant="transparent"
+          class="m-2 my-dropdown"
+          no-caret
+          size="sm"
+          style="margin-top: -5px !important; float: right"
+        >
+          <template slot="button-content">
+            <img
+              class="img-fluid p-2"
+              src="../assets/icons/Menu.png"
+              width="40px"
+            />
+          </template>
+          <b-dropdown-item href="#" v-b-toggle.sidebar-1
+            >Setting</b-dropdown-item
+          >
+          <b-dropdown-item href="#">Contact</b-dropdown-item>
+          <b-dropdown-item href="#">Calls</b-dropdown-item>
+          <b-dropdown-item href="#">Save Message</b-dropdown-item>
+          <b-dropdown-item href="#">Invite Friends</b-dropdown-item>
+          <b-dropdown-item href="#">Telegram FAQ</b-dropdown-item>
+        </b-dropdown>
         <b-sidebar id="sidebar-1" title="Profile" shadow>
           <div class="px-3 py-2">
             <b-img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
+              v-bind:src="`${url}` + `/${this.getterUserLogin.image}`"
               fluid
               class="styleSideBar"
             ></b-img>
-            <h4 class="text-center mt-3">Dimas Prayoga</h4>
-            <p class="text-center">@Dimasu</p>
-            <h5>Account</h5>
-            <p v-if="editPhone === false">081385394637</p>
+            <h4 class="text-center mt-3">{{ this.getterUserLogin.name }}</h4>
+            <p class="text-center">@{{ this.getterUserLogin.username }}</p>
+            <h6 class="mt-4">Phone Number</h6>
             <input
-              v-else
               type="text"
-              value="081385394637"
+              v-bind:value="`${this.getterUserLogin.phone}`"
               class="inputSidebar"
+              style="
+                border: none;
+                display: inline;
+                font-family: inherit;
+                font-size: inherit;
+                padding: none;
+                width: auto;
+                background-color: #fafafa;
+              "
             />
-            <p
-              v-if="editPhone === false"
-              class="mb-4 text-color mt-minus-10"
-              @click="changeEditPhone(true)"
-            >
-              Tap to change phone number
-            </p>
-            <b-button
-              variant="primary"
-              class="ml-2 mb-1"
-              size="sm"
-              v-else
-              @click="changeEditPhone(false)"
-              >Save</b-button
-            >
             <hr />
-            <p class="font-weight-bold">@Dimasu</p>
-            <p style="margin-top: -15px">Username</p>
+            <h6>Username</h6>
+            <p>@{{ this.getterUserLogin.username }}</p>
             <hr />
-            <p class="font-weight-bold">
-              I am senior frontend developer bro from microsoft
-            </p>
-            <p style="margin-top: -15px">Bio</p>
+            <h6 style="display: inline-block">Bio</h6>
+            <p>I am senior frontend developer bro from microsoft</p>
+            <!-- <b-icon icon="pencil-fill" class="ml-3"></b-icon> -->
             <hr />
             <h5 class="mb-3">Location</h5>
             <GmapMap
@@ -68,12 +77,26 @@
       <b-col xl="12" class="header_search">
         <b-form-input
           placeholder="Type your message..."
-          style="display: inline"
+          style="display: inline; width: 200px"
         ></b-form-input>
-        <img
-          src="../assets/icons/Plus.png"
-          style="margin-left: 20px; margin-top: -5px"
-        />
+        <b-dropdown
+          variant="transparent"
+          class="m-2"
+          no-caret
+          size="sm"
+          style="margin-top: -5px !important; float: right"
+        >
+          <template slot="button-content">
+            <img
+              class="img-fluid p-2"
+              src="../assets/icons/Plus.png"
+              width="40px"
+            />
+          </template>
+          <b-dropdown-item href="#">Action</b-dropdown-item>
+          <b-dropdown-item href="#">Another action</b-dropdown-item>
+          <b-dropdown-item href="#">Something else here</b-dropdown-item>
+        </b-dropdown>
       </b-col>
       <b-col xl="12" class="menu-wrapper">
         <b-button
@@ -91,31 +114,17 @@
       </b-col>
       <b-col xl="12" class="roomchat-wrapper" id="style-8">
         <b-card
-          v-for="(item, index) in get_roomchat"
+          v-for="(item, index) in getterRoomChat"
           v-bind:img-src="`${url}` + '/' + item.image"
           img-alt="Card image"
           img-left
-          class="mb-3 mt-1"
+          class="mb-3 mt-1 sidePeople"
           :key="index"
+          @click="clickInRoomChat(item)"
         >
-          <p
-            style="
-              margin-left: 10px;
-              line-height: 20px;
-              font-weight: bold;
-              margin-top: 8px;
-            "
-          >
+          <p class="styleName">
             {{ item.name }}
-            <em
-              style="
-                float: right;
-                font-style: normal;
-                font-weight: normal;
-                color: #848484;
-              "
-              >15:20</em
-            >
+            <em class="styleTime">15:20</em>
           </p>
           <p style="margin-left: 10px; line-height: 0px; color: #7e98df">
             Dimas
@@ -144,31 +153,32 @@ export default {
   },
   computed: {
     ...mapGetters({
-      get_user_login: 'data_user',
-      get_roomchat: 'get_roomchat'
+      getterUserLogin: 'data_user',
+      getterRoomChat: 'dataListRoomChat',
+      getterDataInRoomChat: 'dataInRoomChat'
     })
   },
   methods: {
-    ...mapActions(['act_get_roomchat']),
-    ...mapMutations([]),
-    get_data_room() {
-      this.id_login.id_user_login = this.get_user_login.id
-    },
-    changeEditPhone(data) {
-      if (data === false) {
-        this.editPhone = false
-      } else {
-        this.editPhone = true
-      }
+    ...mapActions({
+      actionGetListRoomChat: 'getListRoomChat',
+      actionInRoomChat: 'getInRoomChat'
+    }),
+    ...mapMutations({ mutationPushCordinates: 'pushLatLng' }),
+    clickInRoomChat(idRoom) {
+      this.actionInRoomChat(idRoom.id_roomchat)
     }
   },
-  created() {
-    this.act_get_roomchat(this.get_user_login.id)
-    this.get_data_room()
-    this.$getLocation().then((coordinates) => {
+  async created() {
+    await this.actionGetListRoomChat(this.getterUserLogin.id)
+    await this.$getLocation().then((coordinates) => {
       this.latitute = coordinates.lat
       this.longtitute = coordinates.lng
     })
+    const dataCordinates = {
+      lat: this.latitute,
+      lng: this.longtitute
+    }
+    this.mutationPushCordinates(dataCordinates)
   }
 }
 </script>
@@ -182,8 +192,20 @@ export default {
   /* background-color: chartreuse; */
 }
 .header_search {
-  margin-top: 20px;
+  margin-top: 10px;
   /* background-color: chartreuse; */
+}
+.styleName {
+  margin-left: 10px;
+  line-height: 20px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+.styleTime {
+  float: right;
+  font-style: normal;
+  font-weight: normal;
+  color: #848484;
 }
 input {
   border-radius: 10px;
@@ -274,5 +296,17 @@ input {
 }
 .inputSidebar {
   height: 30px;
+}
+.sidePeople:hover {
+  cursor: pointer;
+}
+.my-dropdown .dropdown-menu {
+  background-color: green !important;
+}
+.my-dropdown .dropdown-menu .dropdown-item {
+  background-color: green !important;
+}
+.my-dropdown > button {
+  background-color: green !important;
 }
 </style>

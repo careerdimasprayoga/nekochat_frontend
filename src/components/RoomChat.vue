@@ -2,7 +2,17 @@
   <b-row>
     <b-col sm="12" id="header">
       <img v-bind:src="`${url}` + '/hibiki.jpg'" class="styleHeaderImage" />
-      <h5 class="styleHeaderName">Arif Rahman</h5>
+      <h5
+        class="styleHeaderName"
+        v-if="this.getterDataInRoomChat[0].user_id !== this.getterUserLogin.id"
+      >
+        {{ this.getterDataInRoomChat[0].user_name }}
+      </h5>
+      <h5 class="styleHeaderName" v-else>
+        {{ this.getterDataInRoomChat[1].user_name }}
+      </h5>
+      <!-- {{ this.getterDataInRoomChat }} -->
+      <!-- {{ this.getterUserLogin }} -->
       <p class="styleHeaderStatus text-color">Online</p>
       <img
         src="../assets/icons/profile_menu.png"
@@ -12,23 +22,49 @@
       <b-sidebar id="sidebar-2" title="Profile" right shadow>
         <div class="px-3 py-2">
           <b-img
-            v-bind:src="`${url}` + '/hibiki.jpg'"
+            v-if="
+              this.getterDataInRoomChat[0].user_id !== this.getterUserLogin.id
+            "
+            v-bind:src="
+              `${url}` + `/${this.getterDataInRoomChat[0].user_image}`
+            "
             fluid
             class="styleSideBar mt-4 mb-2"
           ></b-img>
-          <h5 class="mt-5">Arif Rahman</h5>
+          <b-img
+            v-else
+            v-bind:src="
+              `${url}` + `/${this.getterDataInRoomChat[1].user_image}`
+            "
+            fluid
+            class="styleSideBar mt-4 mb-2"
+          ></b-img>
+          <h5
+            class="mt-5"
+            v-if="
+              this.getterDataInRoomChat[0].user_id !== this.getterUserLogin.id
+            "
+          >
+            {{ this.getterDataInRoomChat[0].user_name }}
+          </h5>
+          <h5 class="mt-5" v-else>
+            {{ this.getterDataInRoomChat[1].user_name }}
+          </h5>
           <p>Online</p>
           <h5>Phone Number</h5>
-          <p>081385394637</p>
+          <p
+            v-if="
+              this.getterDataInRoomChat[0].user_id !== this.getterUserLogin.id
+            "
+          >
+            {{ this.getterDataInRoomChat[0].user_phone }}
+          </p>
+          <p v-else>{{ this.getterDataInRoomChat[1].user_phone}}</p>
           <hr />
           <b-col xl="12" class="menu-wrapper">
             <b-button size="md" class="btn-custom-selected">Location</b-button>
-            <b-button size="md" class="btn-custom" style="margin-left: 1px"
-              >Image</b-button
-            >
-            <b-button size="md" class="btn-custom" style="margin-left: 1px"
-              >Document</b-button
-            >
+            <b-button size="md" class="btn-custom ml-1">Image</b-button>
+            <b-button size="md" class="btn-custom ml-1">Document</b-button>
           </b-col>
           <b-col sm="12" class="mt-2">
             <img src="../assets/icons/dummy.png" style="width: 270px" />
@@ -38,150 +74,77 @@
     </b-col>
     <b-col sm="12" id="chat">
       <b-container>
-        <b-row>
-          <b-col sm="12 mt-2">
+        <b-row v-for="(item, index) in getterDataInRoomChat" :key="index">
+          <b-col sm="12 mt-2" v-if="item.id_receive === getterUserLogin.id">
             <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
+              v-bind:src="`${url}` + `/${item.user_image}`"
               class="styleHeaderChat mr-3"
             />
             <p class="textChatReceive">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
-              aliquam explicabo exercitationem nihil, dicta vitae blanditiis
-              corporis maxime dolores est ad aperiam? Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Accusamus quis magni deleniti enim
-              quisquam quidem soluta dolore sunt aspernatur velit nesciunt
-              necessitatibus sed commodi harum officia, eaque quasi in ratione!
+              {{ item.message }}
             </p>
           </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="12 mt-2">
+          <b-col sm="12 mt-2" v-else>
             <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
-              class="styleHeaderChat ml-3"
-              style="float: right"
+              v-bind:src="`${url}` + `/${getterUserLogin.image}`"
+              class="styleHeaderChat ml-3 float-right"
             />
             <p class="textChatSender">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
-            </p>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="12 mt-2">
-            <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
-              class="styleHeaderChat mr-3"
-            />
-            <p class="textChatReceive">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
-              aliquam explicabo exercitationem nihil, dicta vitae blanditiis
-              corporis maxime dolores est ad aperiam? Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Accusamus quis magni deleniti enim
-              quisquam quidem soluta dolore sunt aspernatur velit nesciunt
-              necessitatibus sed commodi harum officia, eaque quasi in ratione!
-            </p>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="12 mt-2">
-            <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
-              class="styleHeaderChat ml-3"
-              style="float: right"
-            />
-            <p class="textChatSender">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
-            </p>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="12 mt-2">
-            <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
-              class="styleHeaderChat mr-3"
-            />
-            <p class="textChatReceive">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
-              aliquam explicabo exercitationem nihil, dicta vitae blanditiis
-              corporis maxime dolores est ad aperiam? Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Accusamus quis magni deleniti enim
-              quisquam quidem soluta dolore sunt aspernatur velit nesciunt
-              necessitatibus sed commodi harum officia, eaque quasi in ratione!
-            </p>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="12 mt-2">
-            <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
-              class="styleHeaderChat ml-3"
-              style="float: right"
-            />
-            <p class="textChatSender">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
-            </p>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="12 mt-2">
-            <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
-              class="styleHeaderChat mr-3"
-            />
-            <p class="textChatReceive">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
-              aliquam explicabo exercitationem nihil, dicta vitae blanditiis
-              corporis maxime dolores est ad aperiam? Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Accusamus quis magni deleniti enim
-              quisquam quidem soluta dolore sunt aspernatur velit nesciunt
-              necessitatibus sed commodi harum officia, eaque quasi in ratione!
-            </p>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="12 mt-2">
-            <img
-              v-bind:src="`${url}` + '/hibiki.jpg'"
-              class="styleHeaderChat ml-3"
-              style="float: right"
-            />
-            <p class="textChatSender">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-              perferendis quod rerum impedit qui molestias minima consequuntur
+              {{ item.message }}
             </p>
           </b-col>
         </b-row>
       </b-container>
     </b-col>
     <b-col sm="12">
-      <b-form-input
-        style="
-          border-radius: 30px;
-          margin: auto;
-          width: 900px;
-          margin-top: 20px;
-        "
-      ></b-form-input>
+      <form @submit.prevent="sendChat()">
+        <b-form-input
+          class="text-input"
+          placeholder="Input your message"
+          v-model="chatMessage"
+        ></b-form-input>
+      </form>
     </b-col>
   </b-row>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'HelloWorld',
   data() {
     return {
       url: process.env.VUE_APP_BASE_URL,
-      editPhone: false
+      editPhone: false,
+      chatMessage: ''
     }
-  }
+  },
+  computed: {
+    ...mapGetters({
+      getterDataInRoomChat: 'dataInRoomChat',
+      getterUserLogin: 'data_user'
+    })
+  },
+  methods: {
+    ...mapActions({ actionSendChat: 'postChat' }),
+    sendChat() {
+      let receiver = ''
+      if (this.getterDataInRoomChat[0].id_receive === this.getterUserLogin.id) {
+        receiver = this.getterDataInRoomChat[0].id_sender
+      } else {
+        receiver = this.getterDataInRoomChat[0].id_receive
+      }
+      const dataMessage = {
+        roomchat_id: this.getterDataInRoomChat[0].roomchat_id,
+        id_login: this.getterUserLogin.id,
+        id_receive: receiver,
+        message: this.chatMessage
+      }
+      this.actionSendChat(dataMessage)
+      this.chatMessage = ''
+    }
+  },
+  created() {}
 }
 </script>
 
@@ -190,6 +153,12 @@ export default {
   background-color: #ffffff;
   height: 80px;
   border-bottom: 1px solid #e5e5e5;
+}
+.text-input {
+  border-radius: 30px;
+  margin: auto;
+  width: 900px;
+  margin-top: 20px;
 }
 .styleHeaderImage {
   width: 60px;

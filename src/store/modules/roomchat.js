@@ -6,7 +6,6 @@ export default {
   },
   mutations: {
     data_roomchat(state, payload) {
-      // console.log(payload.data)
       state.roomchat = payload.data
     }
   },
@@ -18,7 +17,6 @@ export default {
       axios
         .post(`${process.env.VUE_APP_BASE_URL}/chat_room`, mydata)
         .then((response) => {
-          // console.log(response)
           context.commit('data_roomchat', response.data)
         })
         .catch((error) => {
@@ -28,7 +26,6 @@ export default {
   },
   getters: {
     get_roomchat(state) {
-      // console.log(state.roomchat)
       return state.roomchat
     }
   }
