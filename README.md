@@ -13,7 +13,7 @@
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946139-0a5f3180-1dbc-11eb-8faf-c48edfb22e14.png)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946141-0b905e80-1dbc-11eb-8079-d3297c2dbc2c.png)
 
-[![OC sponsor 0](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png)](https://opencollective.com/bootstrap/sponsor/0/website)
+[![OC sponsor 0](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png)](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png)
 [![OC sponsor 1](https://opencollective.com/bootstrap/sponsor/1/avatar.svg)](https://opencollective.com/bootstrap/sponsor/1/website)
 [![OC sponsor 2](https://opencollective.com/bootstrap/sponsor/2/avatar.svg)](https://opencollective.com/bootstrap/sponsor/2/website)
 [![OC sponsor 3](https://opencollective.com/bootstrap/sponsor/3/avatar.svg)](https://opencollective.com/bootstrap/sponsor/3/website)
