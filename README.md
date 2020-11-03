@@ -7,16 +7,11 @@
     <a href="https://github.com/careerdimasprayoga/Fantasy_POS_Revolution_backend/issues">Request Feature</a>
   </p>
 
-![Image Banner](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png)
+![Image Banner](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png = 200x100)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946078-e3086480-1dbb-11eb-97ef-6e291becc2b7.png)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946104-f3b8da80-1dbb-11eb-883e-96431bbf61b6.png)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946139-0a5f3180-1dbc-11eb-8faf-c48edfb22e14.png)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946141-0b905e80-1dbc-11eb-8079-d3297c2dbc2c.png)
-
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ImageSlideshow-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/7587)
-[![license](https://img.shields.io/github/license/denzcoskun/imageslideshow.svg?style=popout)](https://opensource.org/licenses/Apache-2.0)
-[![](https://jitpack.io/v/denzcoskun/ImageSlideshow.svg)](https://jitpack.io/#denzcoskun/ImageSlideshow)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/db19e5bd13bb4396a4adcbc1954325cc)](https://www.codacy.com/manual/denzcoskun/ImageSlideshow?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=denzcoskun/ImageSlideshow&amp;utm_campaign=Badge_Grade)
 
 ## About The Project
 
