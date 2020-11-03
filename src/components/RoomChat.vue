@@ -171,7 +171,7 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      socket: io('http://127.0.0.1:3009'),
+      socket: io(process.env.VUE_APP_BASE_URL),
       url: process.env.VUE_APP_BASE_URL,
       editPhone: false,
       chatMessage: '',
