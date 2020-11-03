@@ -13,6 +13,17 @@
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946139-0a5f3180-1dbc-11eb-8faf-c48edfb22e14.png)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946141-0b905e80-1dbc-11eb-8079-d3297c2dbc2c.png)
 
+[![OC sponsor 0](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png)](https://opencollective.com/bootstrap/sponsor/0/website)
+[![OC sponsor 1](https://opencollective.com/bootstrap/sponsor/1/avatar.svg)](https://opencollective.com/bootstrap/sponsor/1/website)
+[![OC sponsor 2](https://opencollective.com/bootstrap/sponsor/2/avatar.svg)](https://opencollective.com/bootstrap/sponsor/2/website)
+[![OC sponsor 3](https://opencollective.com/bootstrap/sponsor/3/avatar.svg)](https://opencollective.com/bootstrap/sponsor/3/website)
+[![OC sponsor 4](https://opencollective.com/bootstrap/sponsor/4/avatar.svg)](https://opencollective.com/bootstrap/sponsor/4/website)
+[![OC sponsor 5](https://opencollective.com/bootstrap/sponsor/5/avatar.svg)](https://opencollective.com/bootstrap/sponsor/5/website)
+[![OC sponsor 6](https://opencollective.com/bootstrap/sponsor/6/avatar.svg)](https://opencollective.com/bootstrap/sponsor/6/website)
+[![OC sponsor 7](https://opencollective.com/bootstrap/sponsor/7/avatar.svg)](https://opencollective.com/bootstrap/sponsor/7/website)
+[![OC sponsor 8](https://opencollective.com/bootstrap/sponsor/8/avatar.svg)](https://opencollective.com/bootstrap/sponsor/8/website)
+[![OC sponsor 9](https://opencollective.com/bootstrap/sponsor/9/avatar.svg)](https://opencollective.com/bootstrap/sponsor/9/website)
+
 ## About The Project
 
 Aplikasi realtime chating yang membantu pengguna dalam berkomunikasi jarak jauh. Menggunakan fitur maps dan socket.io
