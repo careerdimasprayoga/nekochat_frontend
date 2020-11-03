@@ -21,12 +21,51 @@
             >Setting</b-dropdown-item
           >
           <b-dropdown-item href="#">Contact</b-dropdown-item>
+          <b-dropdown-item href="#" v-b-modal.modalAddContact
+            >Add Contact</b-dropdown-item
+          >
           <b-dropdown-item href="#">Calls</b-dropdown-item>
           <b-dropdown-item href="#">Save Message</b-dropdown-item>
           <b-dropdown-item href="#">Invite Friends</b-dropdown-item>
           <b-dropdown-item href="#">Telegram FAQ</b-dropdown-item>
           <b-dropdown-item @click="actionLogout()">Logout</b-dropdown-item>
         </b-dropdown>
+        <b-modal id="modalAddContact" hide-footer title="Add Contact">
+          <form @submit.prevent="searchAddUser()">
+            <b-form-input
+              class="inputSearch text-center"
+              v-model="search_email"
+              placeholder="Search email"
+            ></b-form-input>
+          </form>
+          <b-row>
+            <b-col sm="12" v-if="this.getterDataSearchUser.length >= 1">
+              <b-card
+                v-for="(item, index) in getterDataSearchUser"
+                v-bind:img-src="`${url}` + `/${item.image}`"
+                img-alt="Card image"
+                img-left
+                :key="index"
+                class="mb-3 mt-4 ml-3 mr-3"
+              >
+                <b-card-text class="ml-3" style="margin-bottom: 5px">
+                  {{ item.name }}
+                </b-card-text>
+                <b-button
+                  variant="info"
+                  size="sm"
+                  class="ml-3"
+                  @click="addFriend(item)"
+                >
+                  <b-icon icon="person-plus-fill"></b-icon>
+                </b-button>
+                <b-button variant="danger" size="sm" class="ml-2">
+                  <b-icon icon="person-x-fill"></b-icon>
+                </b-button>
+              </b-card>
+            </b-col>
+          </b-row>
+        </b-modal>
         <b-sidebar id="sidebar-1" title="Profile" shadow>
           <div class="px-3 py-2">
             <b-img
@@ -34,37 +73,58 @@
               fluid
               class="styleSideBar"
             ></b-img>
-            <h4 class="text-center mt-3">{{ this.getterUserLogin.name }}</h4>
+            <br />
+            <b-form v-on:submit.prevent="uploadImage">
+              <label for="file">
+                <b-icon
+                  icon="camera"
+                  style="
+                    color: #7952b3;
+                    margin-left: 130px;
+                    margin-top: 5px;
+                    margin-bottom: -5px;
+                  "
+                  font-scale="2"
+                ></b-icon>
+                <input
+                  id="file"
+                  type="file"
+                  @change="handleFile"
+                  style="display: none"
+                  name="image"
+                  accept="image/gif,image/jpeg,image/jpg,image/png"
+                  multiple=""
+                  data-original-title="upload photos"
+                />
+              </label>
+            </b-form>
+            <h4 class="text-center">{{ this.getterUserLogin.name }}</h4>
             <p class="text-center">@{{ this.getterUserLogin.username }}</p>
-            <h6 class="mt-4">Phone Number</h6>
+            <h6 class="mt-4 ml-2">Phone Number</h6>
             <form @submit.prevent="functEditPhone()">
               <b-form-input
                 class="inputSidebar"
+                type="number"
                 v-model="editProfile.phone"
               ></b-form-input>
             </form>
-            <!-- <input
-              type="number"
-              v-bind:value="`${this.getterUserLogin.phone}`"
-              class="inputSidebar"
-            /> -->
             <hr />
-            <h6>Username</h6>
-            <p>@{{ this.getterUserLogin.username }}</p>
+            <h6 class="ml-2">Username</h6>
+            <form @submit.prevent="functEditPhone()">
+              <b-form-input
+                class="inputSidebar"
+                v-model="editProfile.username"
+              ></b-form-input>
+            </form>
+            <!-- <p>@{{ this.getterUserLogin.username }}</p> -->
             <hr />
-            <h6 style="display: inline-block">Bio</h6>
-            <input
-              v-if="this.getterUserLogin.bio === undefined"
-              type="text"
-              value="Input your bio here"
-              class="inputSidebar"
-            />
-            <input
-              v-else
-              type="text"
-              v-bind:value="`${this.getterUserLogin.bio}`"
-              class="inputSidebar"
-            />
+            <h6 style="display: inline-block" class="ml-2">Bio</h6>
+            <form @submit.prevent="functEditPhone()">
+              <b-form-input
+                class="inputSidebar"
+                v-model="editProfile.bio"
+              ></b-form-input>
+            </form>
             <!-- <p>I am senior frontend developer bro from microsoft</p> -->
             <!-- <b-icon icon="pencil-fill" class="ml-3"></b-icon> -->
             <hr />
@@ -123,7 +183,11 @@
         >
       </b-col>
       <b-col xl="12" class="roomchat-wrapper" id="style-8">
+        <p v-if="this.getterDataRoomEmpty === true" class="text-center mt-5">
+          No contact
+        </p>
         <b-card
+          v-else
           v-for="(item, index) in getterRoomChat"
           v-bind:img-src="`${url}` + '/' + item.image"
           img-alt="Card image"
@@ -137,7 +201,7 @@
             <em class="styleTime">15:20</em>
           </p>
           <p style="margin-left: 10px; line-height: 0px; color: #7e98df">
-            Dimas
+            Online
           </p>
         </b-card>
       </b-col>
@@ -164,15 +228,21 @@ export default {
       longtitute: 0,
       oldRoom: '',
       editProfile: {
-        phone: ''
-      }
+        phone: '',
+        username: '',
+        bio: '',
+        image: {}
+      },
+      search_email: ''
     }
   },
   computed: {
     ...mapGetters({
       getterUserLogin: 'data_user',
       getterRoomChat: 'dataListRoomChat',
-      getterDataInRoomChat: 'dataInRoomChat'
+      getterDataInRoomChat: 'dataInRoomChat',
+      getterDataRoomEmpty: 'getterRoomEmpty',
+      getterDataSearchUser: 'getterSeachUser'
     })
   },
   methods: {
@@ -181,13 +251,80 @@ export default {
       actionInRoomChat: 'getInRoomChat',
       actionPushLatLng: 'patchLatLng',
       actionLogout: 'logout',
-      actionPatchProfile: 'patchProfile'
+      actionPatchProfile: 'patchProfile',
+      actionSearchAddUser: 'searchAddUser',
+      actionAddFriend: 'actionAddUser'
     }),
     ...mapMutations({
       mutationPushCordinates: 'pushLatLng',
       pushUserId: 'pushUserId',
       mutationEditUserLogin: 'pushidUserLogin'
     }),
+    async addFriend(data) {
+      try {
+        const form = {
+          id_sender: this.getterUserLogin.id,
+          id_receive: data.id
+        }
+        await this.actionAddFriend(form)
+        await this.actionGetListRoomChat(this.getterUserLogin.id)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    searchAddUser() {
+      this.actionSearchAddUser(this.search_email)
+    },
+    uploadImage() {
+      const data = new FormData()
+      data.append('image', this.form.image)
+      this.actionPatchProfile(data)
+        .then((response) => {
+          this.$swal({
+            position: 'center',
+            icon: 'success',
+            title: response,
+            showConfirmButton: true,
+            timer: 2100
+          })
+        })
+        .catch((error) => {
+          this.$swal({
+            position: 'center',
+            icon: 'error',
+            title: error,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        })
+      this.editProfile = []
+    },
+    handleFile(event) {
+      this.editProfile.image = event.target.files[0]
+      const data = new FormData()
+      data.append('image', this.editProfile.image)
+      this.mutationEditUserLogin(this.getterUserLogin.id)
+      this.actionPatchProfile(data)
+        .then((response) => {
+          this.$swal({
+            position: 'center',
+            icon: 'success',
+            title: response,
+            showConfirmButton: true,
+            timer: 2100
+          })
+        })
+        .catch((error) => {
+          this.$swal({
+            position: 'center',
+            icon: 'error',
+            title: error,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        })
+      this.editProfile = []
+    },
     clickInRoomChat(idRoom) {
       if (this.oldRoom) {
         // console.log('Sudah pernah klik room ' + this.oldRoom)
@@ -210,6 +347,24 @@ export default {
     functEditPhone() {
       this.mutationEditUserLogin(this.getterUserLogin.id)
       this.actionPatchProfile(this.editProfile)
+        .then((response) => {
+          this.$swal({
+            position: 'center',
+            icon: 'success',
+            title: response,
+            showConfirmButton: true,
+            timer: 2100
+          })
+        })
+        .catch((error) => {
+          this.$swal({
+            position: 'center',
+            icon: 'error',
+            title: error,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        })
     }
   },
   async created() {
@@ -225,6 +380,8 @@ export default {
     await this.pushUserId(this.getterUserLogin.id)
     await this.actionPushLatLng(dataCordinates)
     this.editProfile.phone = this.getterUserLogin.phone
+    this.editProfile.username = this.getterUserLogin.username
+    this.editProfile.bio = this.getterUserLogin.bio
   }
 }
 </script>
@@ -342,13 +499,14 @@ input {
 }
 .inputSidebar {
   height: 30px;
-  border: none;
-  display: inline;
-  font-family: inherit;
-  font-size: inherit;
-  padding: none;
   width: 280px;
+  border: none;
   background-color: #fafafa;
+}
+.inputSearch {
+  height: 30px;
+  width: 280px;
+  margin: auto;
 }
 .sidePeople:hover {
   cursor: pointer;

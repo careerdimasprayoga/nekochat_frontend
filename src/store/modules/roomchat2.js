@@ -4,7 +4,9 @@ export default {
   state: {
     listRoomChat: [],
     inRoomChat: [],
-    idUserLogin: ''
+    idUserLogin: '',
+    roomEmty: false,
+    dataSearchUser: ''
   },
   mutations: {
     pushListRoomChat (state, payload) {
@@ -15,6 +17,12 @@ export default {
     },
     pushidUserLogin (state, payload) {
       state.idUserLogin = payload
+    },
+    dataRoomEmpty (state, payload) {
+      state.roomEmty = payload
+    },
+    pushResultSearch (state, payload) {
+      state.dataSearchUser = payload
     }
   },
   actions: {
@@ -22,9 +30,12 @@ export default {
       axios
         .get(`${process.env.VUE_APP_BASE_URL}/chat_room/${payload}`)
         .then((response) => {
+          context.commit('dataRoomEmpty', false)
+          console.log(response)
           context.commit('pushListRoomChat', response.data.data)
         })
         .catch((error) => {
+          context.commit('dataRoomEmpty', true)
           console.log(error.response)
         })
     },
@@ -58,13 +69,38 @@ export default {
         axios
           .patch(`${process.env.VUE_APP_BASE_URL}/profile/edit_profile/${context.state.idUserLogin}`, payload)
           .then((response) => {
+            resolve(response.data.msg)
+          })
+          .catch((error) => {
+            reject(error.data.msg)
+          })
+      })
+    },
+    searchAddUser (context, payload) {
+      axios
+        .get(`${process.env.VUE_APP_BASE_URL}/users/search/${payload}`)
+        .then((response) => {
+          context.commit('pushResultSearch', response.data.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    actionAddUser (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`${process.env.VUE_APP_BASE_URL}/users/addFriendChat`, payload)
+          .then((response) => {
+            console.log(response)
             resolve(response)
           })
           .catch((error) => {
+            console.log(error)
             reject(error)
           })
       })
     }
+
   },
   getters: {
     dataListRoomChat (state) {
@@ -72,6 +108,12 @@ export default {
     },
     dataInRoomChat (state) {
       return state.inRoomChat
+    },
+    getterRoomEmpty (state) {
+      return state.roomEmty
+    },
+    getterSeachUser (state) {
+      return state.dataSearchUser
     }
   }
 }

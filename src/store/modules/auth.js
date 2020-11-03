@@ -7,17 +7,17 @@ export default {
     token: localStorage.getItem('token') || null
   },
   mutations: {
-    data_user(state, payload) {
+    data_user (state, payload) {
       state.user = payload
       state.token = payload.token
     },
-    delUser(state) {
+    delUser (state) {
       state.user = {}
       state.token = null
     }
   },
   actions: {
-    login(context, payload) {
+    login (context, payload) {
       return new Promise((resolve, reject) => {
         axios.post(`${process.env.VUE_APP_BASE_URL}/auth/login`, payload).then(response => {
           context.commit('data_user', response.data.data)
@@ -28,7 +28,7 @@ export default {
         })
       })
     },
-    register(context, payload) {
+    register (context, payload) {
       return new Promise((resolve, reject) => {
         axios.post(`${process.env.VUE_APP_BASE_URL}/auth/register`, payload).then(response => {
           resolve(response.data.data)
@@ -37,12 +37,14 @@ export default {
         })
       })
     },
-    logout(context) {
+    logout (context) {
       localStorage.removeItem('token')
+      sessionStorage.removeItem('vuex')
+      sessionStorage.clear()
       context.commit('delUser')
       router.push('/login')
     },
-    interceptorsRequest(context) {
+    interceptorsRequest (context) {
       axios.interceptors.request.use(function (config) {
         config.headers.Authorization = `Bearer ${context.state.token}`
         return config
@@ -50,7 +52,7 @@ export default {
         return Promise.reject(error)
       })
     },
-    interceptorsResponse(context) {
+    interceptorsResponse (context) {
       axios.interceptors.response.use(function (response) {
         return response
       }, function (error) {
@@ -73,10 +75,10 @@ export default {
     }
   },
   getters: {
-    isLogin(state) {
+    isLogin (state) {
       return state.token !== null
     },
-    data_user(state) {
+    data_user (state) {
       return state.user
     }
   }

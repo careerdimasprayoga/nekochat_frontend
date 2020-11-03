@@ -5,12 +5,12 @@ export default {
     roomchat: []
   },
   mutations: {
-    data_roomchat(state, payload) {
+    data_roomchat (state, payload) {
       state.roomchat = payload.data
     }
   },
   actions: {
-    act_get_roomchat(context, payload) {
+    act_get_roomchat (context, payload) {
       const mydata = {
         id_user_login: payload
       }
@@ -25,7 +25,7 @@ export default {
     }
   },
   getters: {
-    get_roomchat(state) {
+    get_roomchat (state) {
       return state.roomchat
     }
   }
