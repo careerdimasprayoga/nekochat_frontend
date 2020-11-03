@@ -10,7 +10,7 @@
       <b-col sm="9">
         <h5
           class="text-center"
-          v-if="this.getterGetListRoomChat.length < 1"
+          v-if="this.getterDataInRoomChat.length < 1"
           style="margin-top: 250px"
         >
           Please select a chat to start messaging
@@ -38,7 +38,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ getterGetListRoomChat: 'dataListRoomChat' })
+    ...mapGetters({
+      getterGetListRoomChat: 'dataListRoomChat',
+      getterDataInRoomChat: 'dataInRoomChat'
+    })
   },
   methods: {},
   created() {}

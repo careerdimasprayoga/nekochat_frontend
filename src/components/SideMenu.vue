@@ -25,6 +25,7 @@
           <b-dropdown-item href="#">Save Message</b-dropdown-item>
           <b-dropdown-item href="#">Invite Friends</b-dropdown-item>
           <b-dropdown-item href="#">Telegram FAQ</b-dropdown-item>
+          <b-dropdown-item @click="actionLogout()">Logout</b-dropdown-item>
         </b-dropdown>
         <b-sidebar id="sidebar-1" title="Profile" shadow>
           <div class="px-3 py-2">
@@ -36,26 +37,35 @@
             <h4 class="text-center mt-3">{{ this.getterUserLogin.name }}</h4>
             <p class="text-center">@{{ this.getterUserLogin.username }}</p>
             <h6 class="mt-4">Phone Number</h6>
-            <input
-              type="text"
+            <form @submit.prevent="functEditPhone()">
+              <b-form-input
+                class="inputSidebar"
+                v-model="editProfile.phone"
+              ></b-form-input>
+            </form>
+            <!-- <input
+              type="number"
               v-bind:value="`${this.getterUserLogin.phone}`"
               class="inputSidebar"
-              style="
-                border: none;
-                display: inline;
-                font-family: inherit;
-                font-size: inherit;
-                padding: none;
-                width: auto;
-                background-color: #fafafa;
-              "
-            />
+            /> -->
             <hr />
             <h6>Username</h6>
             <p>@{{ this.getterUserLogin.username }}</p>
             <hr />
             <h6 style="display: inline-block">Bio</h6>
-            <p>I am senior frontend developer bro from microsoft</p>
+            <input
+              v-if="this.getterUserLogin.bio === undefined"
+              type="text"
+              value="Input your bio here"
+              class="inputSidebar"
+            />
+            <input
+              v-else
+              type="text"
+              v-bind:value="`${this.getterUserLogin.bio}`"
+              class="inputSidebar"
+            />
+            <!-- <p>I am senior frontend developer bro from microsoft</p> -->
             <!-- <b-icon icon="pencil-fill" class="ml-3"></b-icon> -->
             <hr />
             <h5 class="mb-3">Location</h5>
@@ -137,10 +147,13 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import io from 'socket.io-client'
+
 export default {
   name: 'RoomChat',
   data() {
     return {
+      socket: io('http://127.0.0.1:3009'),
       id_login: {
         id_user_login: null
       },
@@ -148,7 +161,11 @@ export default {
       url: process.env.VUE_APP_BASE_URL,
       show: false,
       latitute: 0,
-      longtitute: 0
+      longtitute: 0,
+      oldRoom: '',
+      editProfile: {
+        phone: ''
+      }
     }
   },
   computed: {
@@ -162,14 +179,37 @@ export default {
     ...mapActions({
       actionGetListRoomChat: 'getListRoomChat',
       actionInRoomChat: 'getInRoomChat',
-      actionPushLatLng: 'patchLatLng'
+      actionPushLatLng: 'patchLatLng',
+      actionLogout: 'logout',
+      actionPatchProfile: 'patchProfile'
     }),
     ...mapMutations({
       mutationPushCordinates: 'pushLatLng',
-      pushUserId: 'pushUserId'
+      pushUserId: 'pushUserId',
+      mutationEditUserLogin: 'pushidUserLogin'
     }),
     clickInRoomChat(idRoom) {
-      this.actionInRoomChat(idRoom.id_roomchat)
+      if (this.oldRoom) {
+        // console.log('Sudah pernah klik room ' + this.oldRoom)
+        // console.log('mau masuk ke room ' + idRoom.id_roomchat)
+        this.socket.emit('changeRoom', {
+          oldRoom: this.oldRoom,
+          newRoom: idRoom.id_roomchat
+        })
+        this.oldRoom = idRoom.id_roomchat
+        this.actionInRoomChat(idRoom.id_roomchat)
+      } else {
+        // console.log('Belum pernah klik room ' + this.oldRoom)
+        // console.log('Dan akan masuk ke room ' + idRoom.id_roomchat)
+        this.oldRoom = idRoom.id_roomchat
+        this.actionInRoomChat(idRoom.id_roomchat)
+      }
+      // this.actionInRoomChat(idRoom.id_roomchat)
+      // this.socket.emit('changeRoom', {oldRoom: this.oldRoom, newRoom: idRoom.id_roomchat})
+    },
+    functEditPhone() {
+      this.mutationEditUserLogin(this.getterUserLogin.id)
+      this.actionPatchProfile(this.editProfile)
     }
   },
   async created() {
@@ -184,6 +224,7 @@ export default {
     }
     await this.pushUserId(this.getterUserLogin.id)
     await this.actionPushLatLng(dataCordinates)
+    this.editProfile.phone = this.getterUserLogin.phone
   }
 }
 </script>
@@ -301,6 +342,13 @@ input {
 }
 .inputSidebar {
   height: 30px;
+  border: none;
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  padding: none;
+  width: 280px;
+  background-color: #fafafa;
 }
 .sidePeople:hover {
   cursor: pointer;

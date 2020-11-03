@@ -3,7 +3,8 @@ import axios from 'axios'
 export default {
   state: {
     listRoomChat: [],
-    inRoomChat: []
+    inRoomChat: [],
+    idUserLogin: ''
   },
   mutations: {
     pushListRoomChat (state, payload) {
@@ -11,6 +12,9 @@ export default {
     },
     pushInRoomChat (state, payload) {
       state.inRoomChat = payload
+    },
+    pushidUserLogin (state, payload) {
+      state.idUserLogin = payload
     }
   },
   actions: {
@@ -28,7 +32,7 @@ export default {
       axios
         .get(`${process.env.VUE_APP_BASE_URL}/chat_room/getInChat/${payload}`)
         .then((response) => {
-          // console.log(response)
+          console.log(response)
           context.commit('pushInRoomChat', response.data.data)
         })
         .catch((error) => {
@@ -45,6 +49,18 @@ export default {
           })
           .catch((error) => {
             console.log(error)
+            reject(error)
+          })
+      })
+    },
+    patchProfile (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`${process.env.VUE_APP_BASE_URL}/profile/edit_profile/${context.state.idUserLogin}`, payload)
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((error) => {
             reject(error)
           })
       })

@@ -1,7 +1,16 @@
 <template>
   <b-row>
     <b-col sm="12" id="header">
-      <img v-bind:src="`${url}` + '/hibiki.jpg'" class="styleHeaderImage" />
+      <img
+        v-if="this.getterDataInRoomChat[0].user_id !== this.getterUserLogin.id"
+        v-bind:src="`${url}` + `/${this.getterDataInRoomChat[0].user_image}`"
+        class="styleHeaderImage"
+      />
+      <img
+        v-else
+        v-bind:src="`${url}` + `/${this.getterDataInRoomChat[1].user_image}`"
+        class="styleHeaderImage"
+      />
       <h5
         class="styleHeaderName"
         v-if="this.getterDataInRoomChat[0].user_id !== this.getterUserLogin.id"
@@ -174,6 +183,7 @@ export default {
           message: ''
         }
       ],
+      imageChanger: '',
       dataPreviusMessage: []
     }
   },
@@ -187,8 +197,6 @@ export default {
     this.socket.on('dataChatMessage', (data) => {
       this.dataPreviusMessage.push(data)
       this.mutationPushInRoomChat(this.dataPreviusMessage)
-      console.log(this.dataPreviusMessage)
-      // on ngambil data dari backend | emmit ngelempar dari backend
     })
   },
   methods: {
@@ -221,7 +229,7 @@ export default {
         user_id: receiver,
         user_name: this.getterDataInRoomChat[0].user_name,
         user_email: this.getterDataInRoomChat[0].user_email,
-        user_image: this.getterDataInRoomChat[0].user_image
+        user_image: this.imageChanger
       }
       this.socket.emit('globalMessage', dataMessageTwo)
       this.chatMessage = ''
@@ -264,6 +272,8 @@ export default {
 #chat {
   overflow: auto;
   height: 470px;
+  display: flex;
+  flex-direction: column-reverse;
 }
 #chat::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
