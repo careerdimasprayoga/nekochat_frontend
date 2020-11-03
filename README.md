@@ -8,7 +8,7 @@
   </p>
 
 
-![Image Banner](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png
+![Image Banner](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png)
 
 ## About The Project
 
