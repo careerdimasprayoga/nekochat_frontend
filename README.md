@@ -7,7 +7,8 @@
     <a href="https://github.com/careerdimasprayoga/Fantasy_POS_Revolution_backend/issues">Request Feature</a>
   </p>
 
-![Image Banner](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png =200x100)
+
+![Image Banner](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png){ width=50% }
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946078-e3086480-1dbb-11eb-97ef-6e291becc2b7.png)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946104-f3b8da80-1dbb-11eb-883e-96431bbf61b6.png)
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97946139-0a5f3180-1dbc-11eb-8faf-c48edfb22e14.png)
