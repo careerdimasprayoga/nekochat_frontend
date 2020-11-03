@@ -229,7 +229,7 @@ export default {
         user_id: receiver,
         user_name: this.getterDataInRoomChat[0].user_name,
         user_email: this.getterDataInRoomChat[0].user_email,
-        user_image: this.imageChanger
+        user_image: this.getterDataInRoomChat[0].user_image
       }
       this.socket.emit('globalMessage', dataMessageTwo)
       this.chatMessage = ''
