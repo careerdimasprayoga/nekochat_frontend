@@ -1,18 +1,17 @@
 <h1 align='center'>Vue JS - Nekochat</h1>
   <p align="center">
-    <a href="https://fantasy-pos.netlify.app/">View Demo</a>
+    <a href="http://nekochat.netlify.app/">View Demo</a>
     ·
-    <a href="https://github.com/careerdimasprayoga/Fantasy_POS_Revolution_backend/issues">Report Bug</a>
+    <a href="https://github.com/careerdimasprayoga/nekochat_frontend/issues">Report Bug</a>
     ·
-    <a href="https://github.com/careerdimasprayoga/Fantasy_POS_Revolution_backend/issues">Request Feature</a>
+    <a href="https://github.com/careerdimasprayoga/nekochat_frontend/issues">Request Feature</a>
   </p>
-
 
 ![Image Banner](https://user-images.githubusercontent.com/66796874/97945870-61183b80-1dbb-11eb-9ba4-622b51b8f217.png)
 
 ## About The Project
 
-Aplikasi realtime chating yang membantu pengguna dalam berkomunikasi jarak jauh. Menggunakan fitur maps dan socket.io
+Realtime Chat application. Build with Top 10 javascript framework Vue.js and Express.js. Used technology Socket.io, Vue2 Google Maps (Maps) and Vuex.
 
 ## Built With
 
@@ -23,7 +22,7 @@ Aplikasi realtime chating yang membantu pengguna dalam berkomunikasi jarak jauh.
 
 1. <a href="https://nodejs.org/en/download/">Node Js</a>
 2. Node_modules `npm install` or `yarn install`
-3. Backend API Fantasy POS Revolution Backend [`here`](https://github.com/careerdimasprayoga/nekochat_backend)
+3. Backend API Neko Chat Backend [`here`](https://github.com/careerdimasprayoga/nekochat_backend)
 
 ## Getting Started
 
@@ -33,7 +32,7 @@ Aplikasi realtime chating yang membantu pengguna dalam berkomunikasi jarak jauh.
 4. Add .env file at root folder project
 
 ```
-VUE_APP_URL = https://fantasy-pos-revolution.fwdev.online / [Backend API]
+VUE_APP_URL = https://nekochat.fwdev.online / [Backend API]
 ```
 
 5. Type `npm run serve`

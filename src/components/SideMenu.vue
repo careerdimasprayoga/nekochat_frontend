@@ -66,7 +66,7 @@
             </b-col>
           </b-row>
         </b-modal>
-        <b-sidebar id="sidebar-1" title="Profile" shadow>
+        <b-sidebar id="sidebar-1" title="Profile" style="width: 20px" shadow>
           <div class="px-3 py-2">
             <b-img
               v-bind:src="`${url}` + `/${this.getterUserLogin.image}`"
