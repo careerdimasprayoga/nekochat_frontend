@@ -11,7 +11,7 @@
 
 ## About The Project
 
-Realtime Chat application. Build with Top 10 javascript framework Vue.js and Express.js. Used technology Socket.io, Vue2 Google Maps (Maps) and Vuex.
+Realtime Chat application. Dibangun menggunakan Top 10 javascript framework 2020 Vue.js and Express.js. Menggunakan depedency Socket Io dan Maps geolocation sebagai depedencynya. Memiliki fitur utama Realtime Chat dan Get Lokasi.
 
 ## Built With
 
